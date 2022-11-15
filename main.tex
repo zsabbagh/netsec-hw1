@@ -1,0 +1,81 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+
+\title{EP2500 Netsec Homework 1}
+\author{Zakaria Sabbagh \\ Daniel Williams}
+\date{November 2022}
+
+\begin{document}
+
+\maketitle
+
+\section{Symmetric Key Security Protocols}
+
+\section{Asymmetric Key Security Protocols}
+
+\section{Jamming Impact on End-to-end Wireless Communications}
+We have the following data:
+\begin{itemize}
+    \item Probability: $p$
+    \item Probability that there is no available channel from A to C: $$
+\end{itemize}
+
+\section{Channel Jamming}
+\subsection*{What is the probability that a packet is lost due to jamming on any transmission?} \\
+We're looking for the probability that both the transmitter and the jammer choose the same channel, which is the sum of the probabilities of them both choosing channels 1 through 4 at the same time. 
+Since they are independent events, the probability of them occurring at the same time is the product of the probabilities.
+Let $T_i$ symbolise that the transmission takes place on channel $i$, and $J_i$ that channel $i$ is being jammed.
+\begin{align*}
+    \sum _ {i \in \{1,2,3,4\}}P(T_i \land  J_i)  &= \sum _ {i \in \{1,2,3,4\}}P(T_i)P( J_i) \\
+    &= P(T_1)P(J_1)+P(T_2)P(J_2)+P(T_3)P(J_3)+P(T_4)P(J_4) \\
+    &= 0.1\cdot 0.4 + 0.2\cdot 0.3 + 0.5 \cdot 0.2 + 0.2\cdot 0.1 \\
+    &= 0.04+0.06+0.1+0.02 = 0.22
+\end{align*}
+
+\subsection*{What is the probability that there will be 5 successful transmissions in a row?} \\
+Let $F$ be the event of failed transmission, and $S$ successful transmission. We know that $P(F) = 0.22$, and as transmissions succeeding are independent events we get:
+\\
+\\
+$P(\text{5 in a row}) &= P(S)^5 = P(\neg F)^5 = (1-P(F))^5 = (1-0.22)^5 = 0.78^5\approx 0.29$
+% 0.1, 0.2, 0.5, 0.2
+% ...maps to ...
+% 0.4, 0.3, 0.2, 0.1
+% which gives
+% 0.04+0.06+0.1+0.02 = 0.22
+
+\section{Frequency Hopping Spread Spectrum Anti-jamming}
+
+\subsection*{Question 1}
+
+\subsubsection*{What is the probability that a transmission that lasts 1 second is unjammed?}
+The probability of choosing channel $i$, where we can call $C_i$, is $P(C_i)=\frac{1}{10}$.
+A transmitter being used for 1 second will select a channel $1/0.2 = 5$ times.
+Probability of a successful transmission of 200 ms is $P(\neg J_{i})=\frac{7}{10}$, i.e. the probability of randomly choosing a non-jammed channel.
+Doing so five times in a row is done with a probability of $P(\neg J)^5=0.7^5 \approx 0.17$, as ''duplicate'' choices are possible, meaning $P(C_i)$ is the same for all $i$ during the entire process.
+
+\subsubsection*{What is the probability that 40\% of the transmission is jammed?}
+
+40 \% of the transmission means that exactly 2 of the 5 chosen channels were jammed, which has a probability of $0.7^3+0.3^2 \approx 0.03$. There are $\binom{5}{2}=10$ combinations of this situation, and thus the probability is $P(\text{40\% success-rate})=0.7^3 \cdot 0.3^2\cdot \binom{5}{2} \approx 0.31$.
+This holds by the law of total probability.
+
+\subsection*{Question 2}
+
+\subsubsection*{(a)}
+
+For each 200 ms interval, if the channel has been detected as blocked, exclude this from the list to pick the next channel from.
+We would then get blocked three transmissions at most and would definitely succeed with two, since the jammer only jams three fixed channels. To give an example, this means that the first channel we try has a 30\% risk of failure (being jammed), but if this first channel is jammed, the second channel no longer has a 30\% risk but instead a $\frac{2}{9} \approx 0.22 \implies$ 22\% risk (and after two ha.
+
+\subsubsection*{(b)}
+
+In the long run, however many channels are jammed, as long as there is one available channel transmission success-rate would increase and eventually hit a rate of 100 \%.
+
+\subsubsection*{(c)}
+
+If the transmitter stops choosing pseudo-randomly after realising that a channel is unjammed, the probability of a one-second transmission being unjammed is 0.7 (since only the first channel matters - if this is unjammed, we continue there and thus don't get jammed at all, but if it \textit{is} jammed, we no longer have an unjammed transmission. Also, this means that the event of being 40\% jammed can only occur by choosing $J, J, U$ ($J$ being jammed and $U$ being unjammed), which gives the probability $\frac{3}{10} \frac{2}{9} \frac{7}{8} = \frac{42}{720} = \frac{7}{120}$.
+\\
+\\
+If the jammer chooses different channels each time, there is no way to predict and minimise failure by the transmitter.
+However, this only holds if the jammer chooses channels in a uniform distribution manner, otherwise, the transmitter could use machine learning to learn the behaviour of the jammer and in such way minimise failed transmissions.
+
+\end{document}
